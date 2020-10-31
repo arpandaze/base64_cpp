@@ -1,6 +1,3 @@
-/.vscode
-/base64
-/base64 copy.xpp
-/hello
-/test
-/test.cpp
+!base64.cpp
+!base64.h
+!README.md
