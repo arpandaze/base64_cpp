@@ -16,30 +16,33 @@ class Base64
         mode input_mode;
 
     public:
-        static const mode TextMode = 0;
-        static const mode FileMode = 1;
-        static const mode DecodeMode = 3;
-
-        Base64(string a_source, mode a_mode = Base64::TextMode)
+        static const mode TextEncodeMode = 0;
+        static const mode FileEncodeMode = 1;
+        static const mode TextDecodeMode = 2;
+        static const mode FileDecodeMode = 3;
+        Base64(string a_source, mode a_mode = Base64::TextEncodeMode)
         {
             input_mode = a_mode;
-            if(a_mode == Base64::FileMode){
-                source_filename = a_source; 
+            if(a_mode == Base64::FileEncodeMode){
+                source_filename = a_source;
             }
-            else if(a_mode == Base64::DecodeMode){
+            else if(a_mode == Base64::FileDecodeMode){
                 base64_string = a_source;
             }
-            else{
+            else if(a_mode == Base64::TextEncodeMode){
                 source_string = a_source;
-            }          
+            }
+            else if(a_mode == Base64::TextDecodeMode){
+                base64_string = a_source;
+            }
         }
 
         string encode();
         unsigned char* decode();
         void decode(string);
-        string decode_to_string();
 
-        inline unsigned int b64(char a_char)
+        //Int value of Base64 char
+        unsigned int b64(char a_char)
         {
             if(a_char >= 0x30 && a_char <= 0x39)
             {
