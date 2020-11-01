@@ -1,6 +1,6 @@
 #include "base64.h"
 
-unsigned char* Base64::decode()
+unsigned char* Base64::decode(string output_file)
 {
     int paddding_size = 0;
     paddding_size += (base64_string[base64_string.length()-1]=='=')?1:0;
@@ -28,21 +28,21 @@ unsigned char* Base64::decode()
 
     //Null Terminator
     buffer[buffer_size-1] = 0x0;
-    return buffer;
-}
 
-void Base64::decode(string filename)
-{
-    ofstream output;
-    output.open(filename, ios::out | ios::binary);
-    decode();
-    output.write((char *)buffer, buffer_size-1); //-1 To Skip Null Terminator
-    output.close();
+    if(output_file != "")
+    {
+        ofstream output;
+        output.open(output_file, ios::out | ios::binary);
+        output.write((char *)buffer, buffer_size-1); //-1 To Skip Null Terminator
+        output.close();
+    }
+
+    return buffer;
 }
 
 string Base64::encode()
 {
-    if(input_mode==Base64::FileEncodeMode)
+    if(input_mode==Base64::FileEncode)
     {
         ifstream file;
         file.open(source_filename,ios::in | ios::binary);
@@ -55,14 +55,14 @@ string Base64::encode()
         file.close();
     }
 
-    else if(input_mode==Base64::TextEncodeMode)
+    else if(input_mode==Base64::TextEncode)
     {
         buffer_size = source_string.length();
         buffer = new unsigned char[buffer_size];
         buffer = (unsigned char *)source_string.c_str();
     }
 
-    int padding_length = 3 - buffer_size % 3;
+    int padding_length = (buffer_size % 3) ? (3 - buffer_size % 3) : 0;
 
     for(int i = 0; i < buffer_size; i+=3)
     {
@@ -108,7 +108,7 @@ string Base64::encode()
 
     }
 
-    string pad = (padding_length==0) ? "" : (padding_length==1) ? "=" : "==";
+    string pad = (padding_length==0) ? "" : ((padding_length==1) ? "=" : "==");
     base64_string = base64_string.substr(0,base64_string.length()-padding_length) + pad;
 
     return base64_string;

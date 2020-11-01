@@ -3,7 +3,6 @@
 
 using namespace std;
 
-typedef unsigned int mode;
 
 class Base64
 {
@@ -13,33 +12,28 @@ class Base64
         string source_string;
         string base64_string;
         unsigned char *buffer;
-        mode input_mode;
+
+        int input_mode;
 
     public:
-        static const mode TextEncodeMode = 0;
-        static const mode FileEncodeMode = 1;
-        static const mode TextDecodeMode = 2;
-        static const mode FileDecodeMode = 3;
-        Base64(string a_source, mode a_mode = Base64::TextEncodeMode)
+        enum mode {TextEncode = 1, FileEncode = 2, Decode = 4};
+
+        Base64(string a_source, mode a_mode = Base64::TextEncode)
         {
             input_mode = a_mode;
-            if(a_mode == Base64::FileEncodeMode){
+            if(a_mode == Base64::FileEncode){
                 source_filename = a_source;
             }
-            else if(a_mode == Base64::FileDecodeMode){
+            else if(a_mode == Base64::Decode){
                 base64_string = a_source;
             }
-            else if(a_mode == Base64::TextEncodeMode){
+            else if(a_mode == Base64::TextEncode){
                 source_string = a_source;
-            }
-            else if(a_mode == Base64::TextDecodeMode){
-                base64_string = a_source;
             }
         }
 
         string encode();
-        unsigned char* decode();
-        void decode(string);
+        unsigned char* decode(string output_file = "");
 
         //Int value of Base64 char
         unsigned int b64(char a_char)
