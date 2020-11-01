@@ -2,11 +2,11 @@
 Class: **Base64**
 ### Available Functions:
 | Function name | Description                    |
-| ------------- | ------------------------------ |
-|`Base64( source, mode )`|Class Constructor. Source can be Base64 String, File Name or Text. Different Modes are explained in next section.|
+| ------------------------- | ------------------------------ |
+|`Base64(source, mode)`   |Class Constructor. Source can be Base64 String, File Name or Text. Different Modes are explained in next section.|
 | `encode()`      | Encodes the given source and returns Base64 string.       |
 | `decode()`   | Decodes the Base64 string and returns buffer.
-| `decode( fileName )`   | Decodes the Base64 string and writes output to file.|
+| `decode(fileName)`   | Decodes the Base64 string and writes output to file.|
 
 ### Modes:
 | Modes | Description |
